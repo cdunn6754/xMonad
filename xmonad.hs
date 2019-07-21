@@ -17,14 +17,18 @@ import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
 main = do
-    xmproc <- spawnPipe "xmobar myXmobarrc"
+    xmproc <- spawnPipe "xmobar ++ myXmobarrc"
     xmonad $ myConfig {
       manageHook = manageDocks <+> manageHook defaultConfig
       , layoutHook = avoidStruts $ layoutHook defaultConfig
       , logHook = dynamicLogWithPP xmobarPP
                         { ppOutput = hPutStrLn xmproc
-                        , ppTitle = xmobarColor "green" "" . shorten 50
+                        , ppTitle = xmobarColor xmobarTitleColor "" . shorten 100
+                        , ppCurrent = xmobarColor xmobarCurrentWorkspaceColor ""
+                        , ppSep = "   "
                         }
+      , startupHook = setWMName "LG3D"                        
+      , handleEventHook = docksEventHook
     }
 
 myKeys =
@@ -33,12 +37,20 @@ myKeys =
     ]
     ++
     [ (mask ++ "M-" ++ [key], screenWorkspace scr >>= flip whenJust (windows . action))
-         | (key, scr)  <- zip "wer" [1,0,2] -- was [0..] *** change to match your screen order ***
+         | (key, scr)  <- zip "wer" [1,0,0] -- was [0..] *** change to match your screen order ***
          , (action, mask) <- [ (W.view, "") , (W.shift, "S-")]
     ]
 
-    
+
+-- xMobar
+xmobarTitleColor = "#FFB6B0"
+xmobarCurrentWorkspaceColor = "#CEFFAC"
 myXmobarrc = "~/.xmonad/xmobar.hs"
+
+-- Workspaces
+myWorkspaces = ["1:code/term","2:web","3:code","4:vm","5:media"] ++ map show [6..9]
+
+-- General
 myBorderWidth = 4
 myFocusedBorderColor = "#ffff00"
 myModMask = mod1Mask
@@ -47,4 +59,5 @@ myConfig = defaultConfig {
      borderWidth = myBorderWidth
      , focusedBorderColor = myFocusedBorderColor
      , modMask = myModMask
-     } `additionalKeysP` myKey
+     , workspaces = myWorkspaces
+     } `additionalKeysP` myKeys
