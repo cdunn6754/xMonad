@@ -32,9 +32,10 @@ main = do
     }
 
 myKeys =
-    [
-    -- other additional keys
-    ]
+  [
+    -- ((modMask .|. controlMask, xK_z),
+    --   spawn slock)
+  ]
     ++
     [ (mask ++ "M-" ++ [key], screenWorkspace scr >>= flip whenJust (windows . action))
          | (key, scr)  <- zip "wer" [1,0,0] -- was [0..] *** change to match your screen order ***
@@ -54,9 +55,11 @@ myWorkspaces = ["1:code/term","2:web","3:code","4:vm","5:media"] ++ map show [6.
 myBorderWidth = 4
 myFocusedBorderColor = "#ffff00"
 myModMask = mod1Mask
+myTerminal = "urxvt"
 
 myConfig = defaultConfig {
      borderWidth = myBorderWidth
+--     , terminal = myTerminal
      , focusedBorderColor = myFocusedBorderColor
      , modMask = myModMask
      , workspaces = myWorkspaces

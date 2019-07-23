@@ -1,0 +1,45 @@
+#!/bin/sh
+
+# # Configure X
+xsetroot -cursor_name left_ptr &
+xrdb -merge ~/.Xdefaults &
+xmodmap ~/.xmodmap
+setxkbmap -option "ctrl:nocaps" &
+
+# # Start a window compositor. This ensures Google Chrome paints correctly.
+xcompmgr -n &
+
+# # Set a wallpaper
+feh --bg-fill ~/.wallpaper.jpg &
+
+# # Start two terminals
+# gnome-terminal &
+# gnome-terminal &
+
+# # Start a browser
+# google-chrome &
+
+# Start screensaver
+## run xscreensaver-demo to set up the power management
+killall gnome-screensaver &
+xscreensaver -no-splash &
+xautolock -time 1 -locker "xscreensaver-command -lock" -notify 10 \
+	  -notifier "notify-send -t 5000 -i gtk-dialog-info 'Locking in 10 seconds'" &
+
+# Multihead setup
+xrandr --output HDMI-0 --left-of LVDS
+
+# # Start sound server
+pulseaudio --start --log-target=syslog &
+
+# # Load resources
+
+xrdb -merge .Xresources
+
+if [ -x /usr/bin/nm-applet ] ; then
+   nm-applet --sm-disable &
+fi
+
+exec xmonad
+
+#exec ck-launch-session dbus-launch --sh-syntax --exit-with-session xmonad
