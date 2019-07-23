@@ -31,3 +31,4 @@ tags
 # Mine
 *_64-linux
 *.errors
+*.state

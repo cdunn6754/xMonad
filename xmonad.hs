@@ -54,7 +54,7 @@ myWorkspaces = ["1:code/term","2:web","3:code","4:vm","5:media"] ++ map show [6.
 -- General
 myBorderWidth = 4
 myFocusedBorderColor = "#ffff00"
-myModMask = mod1Mask
+myModMask = mod3Mask -- use xmodmap to change mod keys if necessary
 myTerminal = "urxvt"
 
 myConfig = defaultConfig {
