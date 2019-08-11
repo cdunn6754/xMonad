@@ -5,15 +5,21 @@ xsetroot -cursor_name left_ptr &
 xrdb -merge ~/.Xdefaults &
 xmodmap ~/.xmodmap
 setxkbmap -option "ctrl:nocaps" &
+# # Load resources
+xrdb -merge .Xresources
+# Set up mod key
+xmodmap -e "clear mod3"
+xmodmap -e "remove mod1 = Alt_R"
+xmodmap -e "add mod3 = Alt_R"
 
 # # Start a window compositor. This ensures Google Chrome paints correctly.
 xcompmgr -n &
 
 # # Set a wallpaper
-feh --bg-fill ~/.wallpaper.jpg &
+#feh --bg-fill ~/.wallpaper.jpg &
 
 # # Start two terminals
-# gnome-terminal &
+gnome-terminal &
 # gnome-terminal &
 
 # # Start a browser
@@ -26,20 +32,18 @@ xscreensaver -no-splash &
 xautolock -time 1 -locker "xscreensaver-command -lock" -notify 10 \
 	  -notifier "notify-send -t 5000 -i gtk-dialog-info 'Locking in 10 seconds'" &
 
-# Multihead setup
-xrandr --output HDMI-0 --left-of LVDS
+#stalonetray &
 
 # # Start sound server
 pulseaudio --start --log-target=syslog &
-
-# # Load resources
-
-xrdb -merge .Xresources
 
 if [ -x /usr/bin/nm-applet ] ; then
    nm-applet --sm-disable &
 fi
 
-exec xmonad
+# put in bashrc for dual monitors
+# Multihead setup
+#xrandr --output HDMI-0 --left-of LVDS --output LVDS --auto
 
-#exec ck-launch-session dbus-launch --sh-syntax --exit-with-session xmonad
+#exec dbus-launch --sh-syntax --exit-with-session xmonad
+exec xmonad

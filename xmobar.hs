@@ -13,8 +13,9 @@ Config { font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*"
                         , Run Com "uname" ["-s","-r"] "" 36000
                         , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
                         , Run StdinReader
+                        , Run Battery ["-t","<timeleft>","-L","50","-H","75","-h","green","-n","yell","-l","red"] 10
                         ]
         , sepChar = "%"
         , alignSep = "}{"
-        , template = "%StdinReader% | %cpu% | %memory% * %swap% | %eth0% - %eth1% }{<fc=#ee9a00>%date%</fc> | %uname% | %CYVR% "
+        , template = "%StdinReader% | %cpu% | %memory% * %swap% | %battery%}{<fc=#ee9a00>%date%</fc> | %uname% | %CYVR% "
         }
