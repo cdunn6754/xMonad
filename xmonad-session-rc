@@ -3,17 +3,13 @@
 # # Configure X
 xsetroot -cursor_name left_ptr &
 xrdb -merge ~/.Xdefaults &
-xmodmap ~/.xmodmap
-setxkbmap -option "ctrl:nocaps" &
 # # Load resources
 xrdb -merge .Xresources
-# Set up mod key
-xmodmap -e "clear mod3"
-xmodmap -e "remove mod1 = Alt_R"
-xmodmap -e "add mod3 = Alt_R"
+#xmodmap ~/.xmodmap
+#setxkbmap -option "ctrl:nocaps" &
 
 # # Start a window compositor. This ensures Google Chrome paints correctly.
-xcompmgr -n &
+#xcompmgr -n &
 
 # # Set a wallpaper
 #feh --bg-fill ~/.wallpaper.jpg &
@@ -29,13 +25,18 @@ gnome-terminal &
 ## run xscreensaver-demo to set up the power management
 killall gnome-screensaver &
 xscreensaver -no-splash &
-xautolock -time 1 -locker "xscreensaver-command -lock" -notify 10 \
+xautolock -time 5 -locker "xscreensaver-command -lock" -notify 10 \
 	  -notifier "notify-send -t 5000 -i gtk-dialog-info 'Locking in 10 seconds'" &
 
-#stalonetray &
+stalonetray -c ~/.xmonad/stalonetrayrc &
 
 # # Start sound server
 pulseaudio --start --log-target=syslog &
+
+# Set up mod key
+xmodmap -e "clear mod3"
+xmodmap -e "remove mod1 = Alt_R"
+xmodmap -e "add mod3 = Alt_R"
 
 if [ -x /usr/bin/nm-applet ] ; then
    nm-applet --sm-disable &
@@ -43,7 +44,6 @@ fi
 
 # put in bashrc for dual monitors
 # Multihead setup
-#xrandr --output HDMI-0 --left-of LVDS --output LVDS --auto
+xrandr --output HDMI-0 --left-of LVDS --output LVDS --auto
 
-#exec dbus-launch --sh-syntax --exit-with-session xmonad
-exec xmonad
+exec dbus-launch --sh-syntax --exit-with-session xmonad

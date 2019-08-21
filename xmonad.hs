@@ -17,7 +17,7 @@ import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
 main = do
-    xmproc <- spawnPipe "xmobar ++ myXmobarrc"
+    xmproc <- spawnPipe "xmobar ++ xmobarrc"
     xmonad $ myConfig {
       manageHook = manageDocks <+> manageHook defaultConfig
       , layoutHook = avoidStruts $ layoutHook defaultConfig
